@@ -1,10 +1,18 @@
 {
   "name": "netflix-clone-astro",
-  "type": "module",
+  "description": "A Netflix clone built with Astro",
   "version": "0.0.1",
+  "author": "Carlos  Capó",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/picuu/netflix-clone-astro.git"
+  },
+  "keywords": ["astro", "netflix", "clone", "typescript"],
+  "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "biome lint .",
@@ -13,9 +21,9 @@
     "check:fix": "biome check --write ."
   },
   "dependencies": {
-    "astro": "^5.8.0"
+    "astro": "5.8.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4"
+    "@biomejs/biome": "1.9.4"
   }
 }

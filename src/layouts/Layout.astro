@@ -1,0 +1,104 @@
+---
+import { MAIN_PAGE_TITLE, MAIN_PAGE_DESCRIPTION } from '@/lib/constants'
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{MAIN_PAGE_TITLE}</title>
+    <meta name="description" content={MAIN_PAGE_DESCRIPTION} />
+
+    <meta name="color-scheme" content="dark" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    interpolate-size: allow-keywords;
+
+    --bg-color: #141414;
+    --text-color: #e5e5e5;
+    --secondary--color: #595959;
+
+    --red: #e50914;
+    --dark-red: #b20710;
+
+    --padding-inline: 3.8rem;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  html,
+  body {
+    user-select: none;
+    scroll-behavior: smooth;
+    scroll-padding: 8rem;
+  }
+
+  body {
+    position: relative;
+    background-color: var(--bg-color);
+  }
+
+  html,
+  body,
+  button {
+    -webkit-font-smoothing: antialiased;
+    font-family:
+      Netflix Sans,
+      Helvetica Neue,
+      system-ui,
+      Segoe UI,
+      Roboto,
+      Ubuntu,
+      sans-serif;
+    font-size: 0.75vw;
+    color: var(--text-color);
+  }
+
+  main {
+    overflow: hidden;
+    padding-bottom: 2rem;
+  }
+
+  @media screen and (width < 1200px) {
+    html,
+    body {
+      font-size: 0.85vw;
+    }
+  }
+
+  @media screen and (width < 768px) {
+    html,
+    body {
+      font-size: 1vw;
+    }
+  }
+
+  @media screen and (width < 576px) {
+    :root {
+      --padding-inline: 4.5rem;
+    }
+
+    html,
+    body {
+      font-size: 1.5vw;
+    }
+  }
+</style>

@@ -1,0 +1,113 @@
+---
+import { Image } from 'astro:assets'
+import ElCaminoNetflixTrailer from '@/assets/trailers/el-camino-netflix-trailer.mp4'
+import ElCaminoBanner from '@/assets/banners/el-camino-banner.jpg'
+import ElCaminoLogo from '@/assets/logos/films/el-camino.webp'
+
+import { PlayIcon, InfoIcon } from '@/assets/icons'
+import Button from './Button.astro'
+---
+
+<script src="@/scripts/handleMainMovieBanner.js"></script>
+
+<section class="video-section">
+  <video autoplay muted preload="auto" id="video-player">
+    <source src={ElCaminoNetflixTrailer} type="video/mp4" />
+  </video>
+
+  <img class="movie-banner hidden" id="movie-banner" src={ElCaminoBanner.src} alt="Jessy Pinkman en El Camino" />
+
+  <div class="video-info">
+    <Image src={ElCaminoLogo} alt="Netflix Especial. El Camino: Una película de Breaking Bad" />
+
+    <p>
+      Convertido en fugitivo, Jesse Pinkman intenta escapar de su pasado. Escrita y dirigida por Vince Gilligan, creador de
+      "Breaking Bad", y protagonizada por Aaron Paul.
+    </p>
+
+    <div class="actions-buttons">
+      <Button style="primary">
+        <PlayIcon slot="icon" />
+        Reproducir
+      </Button>
+
+      <Button style="secondary">
+        <InfoIcon slot="icon" />
+        Más información
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .video-section {
+    padding-block: 11rem 8rem;
+    padding-inline: var(--padding-inline);
+  }
+
+  video {
+    mask-image: linear-gradient(black 0%, black 60%, transparent 95%) !important;
+  }
+
+  video,
+  .movie-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1;
+    mask-image: linear-gradient(black 60%, transparent);
+  }
+
+  .movie-banner {
+    filter: brightness(0.7);
+    transition: opacity 0.75s ease-in allow-discrete;
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .video-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .video-info img {
+    width: 600px;
+  }
+
+  .video-info p {
+    max-width: 50ch;
+    font-size: 2rem;
+    font-weight: 450;
+    line-height: 1.4;
+    color: #fff;
+  }
+
+  .video-info .actions-buttons {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding-top: 3rem;
+  }
+
+  .video-info::before {
+    content: '';
+    position: absolute;
+    left: -10%;
+    bottom: -45%;
+    background-color: #000;
+    width: 60%;
+    height: 100%;
+    opacity: 0.6;
+    filter: blur(45px);
+    z-index: -1;
+  }
+</style>

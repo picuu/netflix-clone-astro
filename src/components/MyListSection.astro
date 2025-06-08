@@ -1,0 +1,25 @@
+---
+import { Section, SectionTitle, SectionContent, FilmThumbnail } from '@/components'
+import { Films } from '@/lib/constants'
+---
+
+<Section id="my-list">
+  <SectionTitle>Mi lista</SectionTitle>
+
+  <SectionContent>
+    {
+      Films.map((film) => (
+        <FilmThumbnail
+          name={film.name}
+          thumbnail={film.thumbnail}
+          logo={film.logo}
+          scene={film.scene}
+          slug={film.slug}
+          maturingRating={film.maturingRating}
+          duration={film.duration}
+          genres={film.genres}
+        />
+      ))
+    }
+  </SectionContent>
+</Section>

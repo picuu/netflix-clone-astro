@@ -6,3 +6,4 @@ const TIME_TO_SHOW_BANNER = 10
 const TIME_TO_HIDE_VIDEO = 20
 
 export { MAIN_PAGE_TITLE, MAIN_PAGE_DESCRIPTION, TIME_TO_SHOW_BANNER, TIME_TO_HIDE_VIDEO }
+export { default as Films } from './films'

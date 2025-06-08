@@ -43,6 +43,7 @@ function listenVideoHover(video, timeToHide = 5) {
     video.pause()
     setTimeout(() => {
       videoContainer.classList.remove('hidden')
+      filmThumbnail.classList.remove('visible')
     }, 500)
     video.removeEventListener('timeupdate', handleTimeUpdate)
   }

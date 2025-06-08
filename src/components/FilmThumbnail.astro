@@ -23,7 +23,7 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
 <script src="@/scripts/handleScenePreviewVideos.js"></script>
 
 <article class="thumbnail">
-  <div class="media-wrapper">
+  <div class="media-wrapper" style={`--thumbnailUrl: url(${thumbnail.src})`}>
     <Image class="film-thumbnail" id={`${slug}-thumbnail`} src={thumbnail} alt={name} />
 
     <div class="video-container">
@@ -90,22 +90,49 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
       height: auto;
       aspect-ratio: 16 / 9;
       border-radius: 4px;
-      overflow: hidden;
       cursor: pointer;
       transition: border-radius var(--scaling-duration) ease-in-out;
+
+      background-image: var(--thumbnailUrl);
+      background-size: 98%;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        width: 95%;
+        height: 95%;
+
+        background: inherit;
+        filter: blur(40px) saturate(400%);
+        opacity: 0.25;
+        z-index: -1;
+      }
     }
 
     & .media-wrapper .film-thumbnail {
+      border-radius: 4px;
       opacity: 1;
       transition:
         display 300ms ease-in-out allow-discrete,
-        opacity 300ms ease-in-out;
+        opacity 300ms ease-in-out,
+        border-radius var(--scaling-duration) ease-in-out;
 
       &.visible {
         display: block !important;
         opacity: 1 !important;
         transition-delay: 0ms !important;
       }
+    }
+
+    &.media-wrapper .scene-preview {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      transition: border-radius var(--scaling-duration) ease-in-out;
     }
 
     & .media-wrapper .film-thumbnail,
@@ -126,6 +153,7 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
     & .media-wrapper .video-container {
       display: none;
       opacity: 0;
+      overflow: hidden;
       transition:
         display var(--scaling-duration) ease-in-out allow-discrete,
         opacity var(--scaling-duration) ease-in-out;
@@ -158,7 +186,9 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
       }
     }
 
-    &:hover .media-wrapper {
+    &:hover .media-wrapper,
+    &:hover .media-wrapper .film-thumbnail,
+    &:hover .media-wrapper .video-container {
       border-top-left-radius: 0.65rem;
       border-top-right-radius: 0.65rem;
       border-bottom-left-radius: 0;
@@ -181,7 +211,10 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
     &:hover .media-wrapper .film-thumbnail {
       display: none;
       opacity: 0;
-      transition-delay: 1s;
+      transition:
+        display 0ms 1s ease-in-out allow-discrete,
+        opacity 0ms 1s ease-in-out,
+        border-radius var(--scaling-duration) var(--scaling-delay) ease-in-out;
 
       @starting-style {
         display: block;

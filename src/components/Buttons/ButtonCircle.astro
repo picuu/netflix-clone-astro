@@ -1,0 +1,91 @@
+---
+interface Props {
+  style?: 'primary' | 'secondary' | 'tertiary'
+  size?: 'small' | 'medium' | 'large'
+  class?: string
+}
+
+const { style = 'primary', size = 'medium', class: className }: Props = Astro.props
+
+const buttonClassList = `${style} ${size ?? ''} ${className ?? ''}`.trim()
+---
+
+<button class={buttonClassList}>
+  <slot />
+</button>
+
+<style>
+  button {
+    --size: 3.85rem;
+
+    display: grid;
+    place-content: center;
+    padding: 0.8rem;
+    width: var(--size);
+    height: var(--size);
+    aspect-ratio: 1 / 1;
+    background-color: #fff;
+    border-width: 2px;
+    border-style: solid;
+    border-color: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    transition:
+      background-color 100ms ease-in,
+      border-color 100ms ease-in;
+
+    & > :global(*) {
+      color: #181818;
+    }
+
+    &:hover {
+      background-color: #e6e6e6;
+    }
+  }
+
+  button.secondary {
+    background-color: rgba(42 42 42 / 0.6);
+    border-color: hsla(0 0% 100% / 0.5);
+
+    & > :global(*) {
+      color: #fff;
+    }
+
+    &:hover {
+      background-color: rgba(255 255 255 / 0.1);
+      border-color: #fff;
+    }
+
+    &:active {
+      background-color: rgba(255 255 255 / 0.7);
+    }
+  }
+
+  button.tertiary {
+    background-color: transparent;
+    border: none;
+
+    & > :global(*) {
+      color: #fff;
+    }
+
+    &:hover {
+      background-color: rgba(255 255 255 / 0.1);
+    }
+  }
+
+  button.small {
+    --size: 1.7em;
+    padding: 0.35em;
+  }
+
+  button.medium {
+    --size: 2em;
+    padding: 0.4em;
+  }
+
+  button.large {
+    --size: 2.5em;
+    padding: 0.5em;
+  }
+</style>

@@ -4,7 +4,11 @@ import ChevronDownIcon from '@/assets/icons/chevron-down-icon.svg'
 import FacebookIcon from '@/assets/icons/facebook-icon.svg'
 import InfoIcon from '@/assets/icons/info-icon.svg'
 import InstagramIcon from '@/assets/icons/instagram-icon.svg'
+import MaturingRating0Icon from '@/assets/icons/maturing-rating-0-icon.svg'
+import MaturingRating7Icon from '@/assets/icons/maturing-rating-7-icon.svg'
+import MaturingRating12Icon from '@/assets/icons/maturing-rating-12-icon.svg'
 import MaturingRating16Icon from '@/assets/icons/maturing-rating-16-icon.svg'
+import MaturingRating18Icon from '@/assets/icons/maturing-rating-18-icon.svg'
 import PlayIcon from '@/assets/icons/play-icon.svg'
 import PlusIcon from '@/assets/icons/plus-icon.svg'
 import SearchIcon from '@/assets/icons/search-icon.svg'
@@ -24,7 +28,11 @@ export {
   PlayIcon,
   InfoIcon,
   ChevronDownIcon,
+  MaturingRating18Icon,
   MaturingRating16Icon,
+  MaturingRating12Icon,
+  MaturingRating7Icon,
+  MaturingRating0Icon,
   PlusIcon,
   ThumbsUpTwoIcon,
   ThumbsUpIcon,

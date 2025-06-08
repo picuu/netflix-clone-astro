@@ -1,0 +1,27 @@
+---
+import {
+  MaturingRating18Icon,
+  MaturingRating16Icon,
+  MaturingRating12Icon,
+  MaturingRating7Icon,
+  MaturingRating0Icon
+} from '@/assets/icons'
+
+interface Props {
+  age: 0 | 7 | 12 | 16 | 18
+}
+
+const { age }: Props = Astro.props
+
+const maturingRatingIcons = {
+  0: MaturingRating0Icon,
+  7: MaturingRating7Icon,
+  12: MaturingRating12Icon,
+  16: MaturingRating16Icon,
+  18: MaturingRating18Icon
+}
+
+const MaturingIcon = maturingRatingIcons[age]
+---
+
+<MaturingIcon />

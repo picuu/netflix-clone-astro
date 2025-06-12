@@ -122,6 +122,11 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
       transition-delay: var(--scaling-delay);
+
+      &::after {
+        opacity: 0;
+        transition-delay: var(--scaling-delay);
+      }
     }
 
     /* SHOW SCENE PREVIEW */
@@ -168,6 +173,29 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
     border-radius: 4px;
     cursor: pointer;
     transition: border-radius var(--scaling-duration) ease-in-out;
+
+    background-image: var(--thumbnailUrl);
+    background-size: 97%;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* GLOW BACKGROUND EFFECT */
+    &::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      width: 95%;
+      height: 95%;
+
+      background: inherit;
+      filter: blur(40px) saturate(400%);
+      opacity: 0.25;
+      z-index: -1;
+
+      transition: opacity var(--scaling-duration) ease-in-out;
+    }
 
     & .film-thumbnail,
     & .video-container {

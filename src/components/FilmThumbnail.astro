@@ -1,10 +1,10 @@
 ---
 import { Image } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
 
 import { PlayIcon, PlusIcon, ThumbsUpTwoIcon, ThumbsUpIcon, ThumbsDownIcon, ChevronDownIcon } from '@/assets/icons'
 
 import { ButtonCircle, HoverMenu, HoverMenuOptions, MaturingRatingIcon } from '@/components'
-import type { ImageMetadata } from 'astro'
 
 interface Props {
   name: string
@@ -66,15 +66,34 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
 </article>
 
 <style>
-  .thumbnail {
-    --scaling-duration: 185ms;
+  :root {
     --scaling-delay: 350ms;
+    --scaling-duration: 185ms;
+    --animation-duration: calc(var(--scaling-delay) + var(--scaling-duration));
 
+    --update-z-index-delay: calc(var(--scaling-delay) * 0.75);
+    --show-card-content-duration: calc(var(--scaling-duration) * 0.5);
+    --hide-card-content-duration: var(--scaling-duration);
+
+    --show-scene-duration: 200ms;
+
+    --visible-thumbnail-after-scaling-duration: 350ms;
+    --hide-thumbnail-after-scaling-delay: calc(
+      var(--animation-duration) + var(--visible-thumbnail-after-scaling-duration) + var(--show-scene-duration)
+    );
+
+    --show-scene-delay: calc(var(--hide-thumbnail-after-scaling-delay) - var(--show-scene-duration));
+
+    --hide-scene-delay: 100ms;
+    --hide-scene-duration: 350ms;
+  }
+
+  .thumbnail {
     position: relative;
     z-index: 1;
     transition:
       transform var(--scaling-duration) ease-in-out,
-      z-index 0ms 300ms;
+      z-index 0ms var(--update-z-index-delay);
 
     &:nth-child(6n + 2) {
       transform-origin: 0 100%;
@@ -82,96 +101,6 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
 
     &:nth-child(6n + 1) {
       transform-origin: 100% 100%;
-    }
-
-    & .media-wrapper {
-      position: relative;
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: border-radius var(--scaling-duration) ease-in-out;
-
-      background-image: var(--thumbnailUrl);
-      background-size: 98%;
-      background-position: center;
-      background-repeat: no-repeat;
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        width: 95%;
-        height: 95%;
-
-        background: inherit;
-        filter: blur(40px) saturate(400%);
-        opacity: 0.25;
-        z-index: -1;
-      }
-    }
-
-    & .media-wrapper .film-thumbnail {
-      border-radius: 4px;
-      opacity: 1;
-      transition:
-        display 300ms ease-in-out allow-discrete,
-        opacity 300ms ease-in-out,
-        border-radius var(--scaling-duration) ease-in-out;
-
-      &.visible {
-        display: block !important;
-        opacity: 1 !important;
-        transition-delay: 0ms !important;
-      }
-    }
-
-    &.media-wrapper .scene-preview {
-      border-top-left-radius: 4px;
-      border-top-right-radius: 4px;
-      transition: border-radius var(--scaling-duration) ease-in-out;
-    }
-
-    & .media-wrapper .film-thumbnail,
-    & .media-wrapper .video-container {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    & .media-wrapper img,
-    & .media-wrapper video {
-      height: 100%;
-      object-fit: contain;
-    }
-
-    & .media-wrapper .video-container {
-      display: none;
-      opacity: 0;
-      overflow: hidden;
-      transition:
-        display var(--scaling-duration) ease-in-out allow-discrete,
-        opacity var(--scaling-duration) ease-in-out;
-
-      & .film-logo {
-        position: absolute;
-        left: 1%;
-        bottom: 1.5%;
-        width: 42%;
-        height: auto;
-        transition: opacity var(--scaling-duration) ease-in-out;
-      }
-
-      &.hidden {
-        opacity: 0 !important;
-        transition-duration: 350ms !important;
-        transition-delay: 100ms !important;
-      }
     }
 
     /* SCALE THE THUMBNAIL CARD */
@@ -186,9 +115,8 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
       }
     }
 
-    &:hover .media-wrapper,
-    &:hover .media-wrapper .film-thumbnail,
-    &:hover .media-wrapper .video-container {
+    /* TRANSFORM BORDER RADIUS */
+    &:hover .media-wrapper {
       border-top-left-radius: 0.65rem;
       border-top-right-radius: 0.65rem;
       border-bottom-left-radius: 0;
@@ -200,7 +128,7 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
     &:hover .media-wrapper .video-container {
       display: block;
       opacity: 1;
-      transition-delay: 850ms;
+      transition-delay: var(--show-scene-delay);
 
       @starting-style {
         opacity: 0;
@@ -209,28 +137,100 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
 
     /* HIDE THUMNBAIL IMAGE */
     &:hover .media-wrapper .film-thumbnail {
-      display: none;
       opacity: 0;
+      border-top-left-radius: 0.65rem;
+      border-top-right-radius: 0.65rem;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
       transition:
-        display 0ms 1s ease-in-out allow-discrete,
-        opacity 0ms 1s ease-in-out,
+        opacity 0ms var(--hide-thumbnail-after-scaling-delay) ease-in-out,
         border-radius var(--scaling-duration) var(--scaling-delay) ease-in-out;
-
-      @starting-style {
-        display: block;
-        opacity: 1;
-      }
     }
 
     /* SHOW PREVIEW CARD CONTENT */
     &:hover .card-content {
       display: flex;
       opacity: 1;
-      transition-delay: 250ms;
+      transition-delay: var(--scaling-delay);
+      transition-duration: var(--show-card-content-duration);
 
       @starting-style {
         opacity: 0;
       }
+    }
+  }
+
+  .media-wrapper {
+    position: relative;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border-radius var(--scaling-duration) ease-in-out;
+
+    & .film-thumbnail,
+    & .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    & img,
+    & video {
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .media-wrapper .film-thumbnail {
+    opacity: 1;
+    border-radius: 4px;
+    transition:
+      opacity 0ms ease-in-out,
+      border-radius var(--scaling-duration) ease-in-out;
+
+    &.visible {
+      display: block !important;
+      opacity: 1 !important;
+      transition-delay: 0ms !important;
+    }
+  }
+
+  .media-wrapper .video-container {
+    display: none;
+    opacity: 0;
+    overflow: hidden;
+    border-top-left-radius: 0.65rem;
+    border-top-right-radius: 0.65rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    transition:
+      display var(--show-scene-duration) ease-in-out allow-discrete,
+      opacity var(--show-scene-duration) ease-in-out,
+      border-radius var(--scaling-duration) ease-in-out;
+
+    & .film-logo {
+      position: absolute;
+      left: 2%;
+      bottom: 4%;
+      width: 42%;
+      height: auto;
+      transition: opacity var(--scaling-duration) ease-in-out;
+    }
+
+    & .scene-preview {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      transition: border-radius var(--scaling-duration) ease-in-out;
+    }
+
+    &.hidden {
+      opacity: 0 !important;
+      transition-duration: var(--hide-scene-duration) !important;
+      transition-delay: var(--hide-scene-delay) !important;
     }
   }
 
@@ -254,8 +254,8 @@ const { name, thumbnail, logo, scene, slug, maturingRating, duration, genres }: 
     font-size: 10px;
     opacity: 0;
     transition:
-      display var(--scaling-duration) ease-in-out allow-discrete,
-      opacity var(--scaling-duration) ease-in-out;
+      display var(--hide-card-content-duration) ease-in-out allow-discrete,
+      opacity var(--hide-card-content-duration) ease-in-out;
 
     & .list {
       display: flex;
